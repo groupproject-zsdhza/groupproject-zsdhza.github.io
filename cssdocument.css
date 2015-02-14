@@ -6,21 +6,43 @@ h1{
 	color:#666;
 }
 
+h2{
+	text-align: center;
+	line-height:1px;
+
+	font-family: Arial;
+	font-weight: 400;
+	color:#666;
+}
+
 ul li{list-style:none;}
 
-#members li{ 
-	width:130px; 
-	height:130px; 
-	margin-left:40px; 
-	position:relative;
+#members li{
+	width: 200px;
+	height: 130px;
+	margin-left: 60px;
+	position: relative;
+	text-align: center;
 }
 
 #members li div{ 
-	width:200px; 
+	width:550px; 
 	height:130px;
+	border-radius: 20px;
+	text-align:center;
 	background-color:#CCC; 
 	display:none; 
 	position:absolute; 
 	z-index:1000; 
-	left:150px; 
+	left:200px; 
 	top:0;}
+	
+ul li p{
+	text-align:center;
+	margin-top: 10px;
+	margin-bottom: 5px;
+}
+
+ol{
+	padding-left:200px;
+}
