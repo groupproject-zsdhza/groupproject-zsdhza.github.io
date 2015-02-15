@@ -1,3 +1,14 @@
+body{ 
+width:100%; 
+height:100%; 
+FILTER: progid:DXImageTransform.Microsoft.Gradient(gradientType=0,startColorStr=#9FF,endColorStr=#CCC); /*for IE*/ 
+background:-moz-linear-gradient(top,#9FF,#CCC);/*for Firefox*/ 
+background:-webkit-gradient(linear, 0% 0%, 0% 100%,from(#9FF), to(#CCC));/*for Chrome*/ 
+background-image: -webkit-gradient(linear,left bottom,left top,color-start(0, #9FF),color-stop(1, #CCC));/*for Safari*/ 
+filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#9FF', endColorstr='#CCC'); /*for IE6 & IE7*/ 
+-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#9FF', endColorstr='#CCC')"; /*for IE8 */ 
+}
+
 h1{
 	text-align: center;
 	font-family: Arial;
