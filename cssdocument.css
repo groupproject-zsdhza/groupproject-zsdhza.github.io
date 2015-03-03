@@ -26,6 +26,16 @@ h2{
 	color:#666;
 }
 
+h3{
+	text-align: center;
+	line-height:1px;
+
+	font-family: Arial;
+	font-weight: 400;
+	color:#666;
+}
+
+
 ul li{list-style:none;}
 
 #members li{
