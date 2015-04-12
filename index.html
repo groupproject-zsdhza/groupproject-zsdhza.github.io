@@ -162,6 +162,12 @@ d3.csv("gdpdata.csv", function(error, data) {
       .style("text-anchor", "end")
       .text("GDP&Population");
 
+                 var gdp=svg.append("text")
+                          .attr("x","0px")
+                          .attr("y","-5px")
+                          .attr("fill","black")
+                          .attr("font-size","15px")
+                          .text("(Move on the rect to see the detail)");
 
 
 
@@ -182,6 +188,8 @@ d3.csv("gdpdata.csv", function(error, data) {
       .style("fill", function(d) { return color(d.name); })
       .attr("class", "rect")
       .on("mouseover", function(d,i) {
+
+      
             if(i==0)
             {
                   var gdp=svg.append("text")
