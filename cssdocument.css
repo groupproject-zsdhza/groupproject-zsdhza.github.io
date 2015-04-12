@@ -9,6 +9,8 @@ filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=
 -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#9FF', endColorstr='#CCC')"; /*for IE8 */ 
 }
 
+
+
 h1{
 	text-align: center;
 	font-family: Arial;
@@ -58,6 +60,9 @@ ul li{list-style:none;}
 	left:200px; 
 	top:0;}
 	
+#grouplink {
+	text-align: center;}
+
 ul li p{
 	text-align:center;
 	margin-top: 10px;
@@ -70,3 +75,27 @@ ol{
 .comment{
 	font-family:Monospace;
 }
+
+
+
+.bar {
+  fill: steelblue;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: black;
+    shape-rendering: crispEdges;
+}
+
+.axis text {
+	font-family: Arial;
+    font-size: 10px;
+}
+
+svg {
+  	margin-left: 200px;
+
+}
+
