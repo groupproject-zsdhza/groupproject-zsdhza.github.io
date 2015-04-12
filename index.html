@@ -104,7 +104,7 @@
  
 <script>
 
-var margin = {top: 20, right: 20, bottom: 30, left: 40},
+var margin = {top: 40, right: 20, bottom: 30, left: 40},
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
@@ -176,6 +176,35 @@ d3.csv("gdpdata.csv", function(error, data) {
       .attr("height", function(d) { return height - y(d.value); })
       .style("fill", function(d) { return color(d.name); })
       .attr("class", "rect");
+      .attr("class", "rect")
+      .on("mouseover", function(d,i) {
+            if(i==0)
+            {
+                  var gdp=svg.append("text")
+                          .attr("x","200px")
+                          .attr("y","20px")
+                          .attr("class","tooltip")
+                          .attr("fill","black")
+                          .text(function(){return "GDP(0.1 Billion):"+d.value});
+            }
+            if(i==1)
+            {
+
+                  var popu=svg.append("text")
+                          .attr("x","200px")
+                          .attr("y","40px")
+                          .attr("class","tooltip")
+                          .attr("fill","black")
+                          .text(function(){return"Population(10 Thousand):"+d.value});
+
+
+            }
+
+
+          })
+      .on("mouseout", function() { 
+              d3.selectAll(".tooltip").remove();
+          });
 
   var legend = svg.selectAll(".legend")
       .data(ageNames.slice().reverse())
