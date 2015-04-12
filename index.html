@@ -141,6 +141,8 @@ d3.csv("gdpdata.csv", function(error, data) {
     d.ages = ageNames.map(function(name) { return {name: name, value: +d[name]}; });
   });
 
+  //console.log(data);
+
   x0.domain(data.map(function(d) { return d.Year; }));
   x1.domain(ageNames).rangeRoundBands([0, x0.rangeBand()]);
   y.domain([0, d3.max(data, function(d) { return d3.max(d.ages, function(d) { return d.value; }); })]);
@@ -153,12 +155,15 @@ d3.csv("gdpdata.csv", function(error, data) {
   svg.append("g")
       .attr("class", "y axis")
       .call(yAxis)
-    .append("text")
+      .append("text")
       .attr("transform", "rotate(-90)")
       .attr("y", 6)
       .attr("dy", ".71em")
       .style("text-anchor", "end")
       .text("GDP&Population");
+
+
+
 
   var year= svg.selectAll(".year")
       .data(data)
@@ -175,7 +180,6 @@ d3.csv("gdpdata.csv", function(error, data) {
       .attr("y", function(d) { return y(d.value); })
       .attr("height", function(d) { return height - y(d.value); })
       .style("fill", function(d) { return color(d.name); })
-      .attr("class", "rect");
       .attr("class", "rect")
       .on("mouseover", function(d,i) {
             if(i==0)
@@ -210,7 +214,7 @@ d3.csv("gdpdata.csv", function(error, data) {
       .data(ageNames.slice().reverse())
       .enter().append("g")
       .attr("class", "legend")
-      .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+      .attr("transform", function(d, i) { return "translate(-70," + (i * 20-35) + ")"; });
 
   legend.append("rect")
       .attr("x", width - 18)
