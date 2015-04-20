@@ -87,7 +87,7 @@ var svg = d3.select("body").append("svg")
 
 var sub_svg_Total = svg.append("svg")
     .attr("class","sub_chart")
-    .attr("width", sub_width)
+    .attr("width", sub_width+50)
     .attr("height", sub_height)
     .attr("x",850)
     .attr("y",100)
@@ -95,7 +95,7 @@ var sub_svg_Total = svg.append("svg")
 
 var sub_svg_Ave= svg.append("svg")
     .attr("class","sub_chart")
-    .attr("width", sub_width)
+    .attr("width", sub_width+50)
     .attr("height", sub_height)
     .attr("x",850)
     .attr("y",400)
@@ -254,7 +254,12 @@ function sub_Total(id){
 
       var yScale2=d3.scale.linear()
                   .domain([0,63000])
-                  .range([sub_height-top_padding,0]);
+                  .range([sub_height-top_padding*2,0]);
+
+       var yScale_right=d3.scale.linear()
+                  .domain([0,11000])
+                  .range([sub_height-top_padding*2,0]);
+
 
 
 
@@ -280,7 +285,18 @@ function sub_Total(id){
                           .attr("class","axis")
                           .attr("id","yaxis")
                           .call(yAxis)
-                          .attr("transform", "translate(" + left_padding*2 + ")",0);
+                          .attr("transform", "translate(" + left_padding*2 + "," + top_padding + ")");
+
+
+      var yAxis_right = d3.svg.axis();
+
+          yAxis_right.scale(yScale_right).orient("right").ticks(5);
+          
+          sub_svg_Total.append("g")
+                          .attr("class","axis")
+                          .attr("id","yaxis")
+                          .call(yAxis_right)
+                          .attr("transform", "translate(" + sub_width +" ," + top_padding + ")");
 
       var formatAsPercentage = d3.format(".1");
       
@@ -290,17 +306,27 @@ function sub_Total(id){
                       .attr("x",55)
                       .attr("y",13)
                       .text("Population and GDP in Previous 9 Years")
-                      .attr("font-family", "Georgia")
+                      .attr("font-family", "Georgia");
 
        var  province=sub_svg_Total.append("text")
                       .attr("x",180)
                       .attr("y",30)
                       .style("text-anchor", "middle")
-                      .text("Population and GDP in Previous 9 Years")
+                      .text("")
                       .attr("id","province")
-                      .attr("font-family", "Georgia")
+                      .attr("font-family", "Georgia");
 
+                var  ymark=sub_svg_Total.append("text")
+                      .attr("x",40)
+                      .attr("y",30)
+                      .text("GDP/0.1Billion Yuan")
+                      .attr("font-size","10px");
 
+                var  ymark_right=sub_svg_Total.append("text")
+                      .attr("x",230)
+                      .attr("y",30)
+                      .text("Population/10 Thousand")
+                      .attr("font-size","10px");
 
 
 
@@ -370,151 +396,14 @@ function sub_Total(id){
                  .attr("font-size", "8px")
                  .attr("fill", "black")
                  .attr("text-anchor", "middle");
+
+
+
      
    });
 }
 
 
-function sub_Ave(id){
-
-
-
-      var top_padding=20;
-      var left_padding=20;
-
-
-      var xScale=d3.scale.ordinal()
-                  .domain(d3.range(9))
-                  .rangeRoundBands([sub_width,left_padding*2],0.05);
-
-      var yScale=d3.scale.linear()
-                  .domain([0,95000])
-                  .range([0,sub_height-top_padding*2]);
-
-      var yScale2=d3.scale.linear()
-                  .domain([0,95000])
-                  .range([sub_height-top_padding,0]);
-
-
-
-      if(axismark_ave==0){
-        
-        axismark_ave=1;
-
-      var xAxis = d3.svg.axis();
-
-          xAxis.scale(xScale).orient("bottom").ticks(5).tickValues([2012,2011,2010,2009,2008,2007,2006,2005,2004]);
-
-          sub_svg_Total.append("g")
-          .attr("class","axis")
-          .attr("id","xaxis")
-          .call(xAxis)
-          .attr("transform", "translate(0," + (sub_height-top_padding) + ")");
-
-      var yAxis = d3.svg.axis();
-
-          yAxis.scale(yScale2).orient("left").ticks(5);
-          
-          sub_svg_Total.append("g")
-                          .attr("class","axis")
-                          .attr("id","yaxis")
-                          .call(yAxis)
-                          .attr("transform", "translate(" + left_padding*2 + ")",0);
-
-      var formatAsPercentage = d3.format(".1");
-      
-      xAxis.tickFormat(formatAsPercentage);
-
-          sub_svg_Total.append("text")
-                      .attr("x",50)
-                      .attr("y",13)
-                      .text("Population and GDP in Previous 9 Years")
-                      .attr("font-family", "Georgia")
-
-       var  province=sub_svg_Total.append("text")
-                      .attr("x",150)
-                      .attr("y",30)
-                      .text("Population and GDP in Previous 9 Years")
-                      .attr("id","province")
-                      .attr("font-family", "Georgia")
-
-
-
-
-    }
-
-       d3.json("Total_GDP.json", function(dataset) {
-                //console.log(id);
-                //console.log(dataset);
-                //console.log(dataset.filter(function(d){return d.id==id})[0].history);
-
-               var data=[0,0,0,0,0,0,0,0,0];
-              
-              var bars=sub_svg_Total.selectAll(".Total_rect")
-                  .data(data)
-                  .enter()
-                  .append("rect")
-                  .attr("class","Total_rect");
-
-              var texts=sub_svg_Total.selectAll(".Total_mark")
-                  .data(data)
-                  .enter()
-                  .append("text")
-                  .attr("class","Total_mark");
-
-              d3.select("#province").text(function(){return "("+dataset.filter(function(d){return d.id==id})[0].name+")";});
-
-               data=dataset.filter(function(d){return d.id==id})[0].history;
-
-               /* var xScale=d3.scale.ordinal()
-                  .domain(d3.range(data.length))
-                  .rangeRoundBands([0,sub_width],0.05);
-
-                 var yScale=d3.scale.linear()
-                  .domain([0,d3.max(data,function(d){return d;})])
-                  .range([0,sub_height-top_padding]);*/
-
-
-              sub_svg_Total.selectAll(".Total_rect")
-                  .data(data)
-                  .transition()
-                  .duration(500)
-                  .delay(function(d,i){return i/ dataset.length *1000;})
-                  .ease("linear")
-                  .attr("x",function(d,i){
-                    return(xScale(i));
-                    })
-                  .attr("y",function(d){
-                    return sub_height-yScale(d)-top_padding-1;
-                  })
-                  .attr("width",xScale.rangeBand())
-                  .attr("height",function(d){
-                    return yScale(d);
-                  })
-                  // .style("fill", function(d,i) {
-                  //     value1=yScale(d)%255;
-
-                  //     return "rgb(150, "+Math.round(value1)+", "+Math.round(value1)+")";
-                  // });
-                   .style("fill",function(d){return colors(d)});
-
-              sub_svg_Total.selectAll(".Total_mark")
-                  .data(data)
-                  .transition()
-                  .duration(500)
-                  .delay(function(d,i){return i/ dataset.length *1000;})
-                  .ease("linear")
-                 .text(function(d){return d;})
-                 .attr("x", function(d,i){return xScale(i)+15;})
-                 .attr("y", function(d){return sub_height-yScale(d)-top_padding-5; })
-                 .attr("font-family", "sans-serif")
-                 .attr("font-size", "9px")
-                 .attr("fill", "black")
-                 .attr("text-anchor", "middle");
-     
-
-   });
-}
 function sub_Ave(id){
 
 
