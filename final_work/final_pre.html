@@ -185,7 +185,7 @@ d3.json("china.json", function(states) {
 
            d3.select(this).style("fill", function(d,i) {
           value1=255-d.feature.properties.Ave_GDP/52822*255;
-          value2=value1-30;
+          value2=value1+20;
           //value2=d.feature.properties.Ave_GDP%255;
           return "rgb(220, "+Math.round(value2)+", "+Math.round(value1)+")";
         })
