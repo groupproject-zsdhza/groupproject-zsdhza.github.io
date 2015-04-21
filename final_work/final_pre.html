@@ -190,7 +190,7 @@ d3.json("china.json", function(states) {
           return "rgb(220, "+Math.round(value2)+", "+Math.round(value1)+")";
         })
 
-          d3.selectAll(".sub_chart").attr("display","none");
+        //  d3.selectAll(".sub_chart").attr("display","none");
 
       });
       //.attr("class","point");
@@ -300,7 +300,8 @@ function sub_Total(id){
                           .attr("class","axis")
                           .attr("id","yaxis")
                           .call(yAxis_right)
-                          .attr("transform", "translate(" + sub_width +" ," + top_padding + ")");
+                          .attr("transform", "translate(" + sub_width +" ," + top_padding + ")")
+                          .attr("fill","red");
 
       var formatAsPercentage = d3.format(".1");
       
@@ -395,14 +396,13 @@ function sub_Total(id){
                   .ease("linear")
                  .text(function(d){return d;})
                  .attr("x", function(d,i){return xScale(i)+15;})
-                 .attr("y", function(d){return sub_height-yScale(d)-top_padding-5; })
+                 .attr("y", function(d){return sub_height-yScale(d)-top_padding+8; })
                  .attr("font-family", "sans-serif")
                  .attr("font-size", "8px")
                  .attr("fill", "black")
                  .attr("text-anchor", "middle");
       });
-
-         d3.json("Total_population.json",function(dataset){
+             d3.json("Total_population.json",function(dataset){
 
               var data1=[0];
 
@@ -410,7 +410,7 @@ function sub_Total(id){
                data=dataset.filter(function(d){return d.id==id})[0].history;
 
                 var line = d3.svg.line()
-                  .interpolate("linear")
+                  .interpolate("basis")
                   .x(function(d,i){return xScale(i)+xScale.rangeBand()/2;})
                   .y(function(d){return sub_height-yScale_right(d)-top_padding;});
 
@@ -433,11 +433,10 @@ function sub_Total(id){
                     .transition()
                     .duration(300)
                     .attr("d", line(data))
-                    .style("fill","#F00")
-                    .style("fill","black")
+                    .style("fill","none")
                     .style("stroke-width",1)
                     .style("stroke","#F00")
-                    .style("stroke-opacity",0.9)
+                    .style("stroke-opacity",1)
                     .attr("z-index","5");
 
 
@@ -452,15 +451,35 @@ function sub_Total(id){
                   .attr("cy", function(d) {
                         return sub_height-yScale_right(d)-top_padding;
                         })
-                  .attr("r",5)
+                  .attr("r",3)
                   .attr("fill", function(d) {
                   return "rgb( " + (d%255) + ",0, 0)";
                   })
                   .attr("z-index","5");
 
+              var texts=sub_svg_Total.selectAll(".Total_mark_population")
+                  .data(data)
+                  .enter()
+                  .append("text")
+                  .attr("class","Total_mark_population");
+
+              sub_svg_Total.selectAll(".Total_mark_population")
+                  .data(data)
+                  .transition()
+                  .duration(500)
+                  .delay(function(d,i){return i/ dataset.length *1000;})
+                  .ease("linear")
+                 .text(function(d){return d;})
+                 .attr("x", function(d,i){return xScale(i)+15;})
+                 .attr("y", function(d){return sub_height-yScale_right(d)-top_padding-5; })
+                 .attr("font-family", "sans-serif")
+                 .attr("font-size", "8px")
+                 .attr("fill", "red")
+                 .attr("text-anchor", "middle");
 
 
          });
+
 }
 
 
