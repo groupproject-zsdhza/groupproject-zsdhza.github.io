@@ -258,6 +258,10 @@ function sub_Total(id){
 
        var yScale_right=d3.scale.linear()
                   .domain([0,11000])
+                  .range([0,sub_height-top_padding*2]);
+
+      var yScale_right2=d3.scale.linear()
+                  .domain([0,11000])
                   .range([sub_height-top_padding*2,0]);
 
 
@@ -290,7 +294,7 @@ function sub_Total(id){
 
       var yAxis_right = d3.svg.axis();
 
-          yAxis_right.scale(yScale_right).orient("right").ticks(5);
+          yAxis_right.scale(yScale_right2).orient("right").ticks(5);
           
           sub_svg_Total.append("g")
                           .attr("class","axis")
@@ -320,13 +324,13 @@ function sub_Total(id){
                       .attr("x",40)
                       .attr("y",30)
                       .text("GDP/0.1Billion Yuan")
-                      .attr("font-size","10px");
+                      .attr("font-size","8px");
 
                 var  ymark_right=sub_svg_Total.append("text")
-                      .attr("x",230)
-                      .attr("y",30)
+                      .attr("x",250)
+                      .attr("y",25)
                       .text("Population/10 Thousand")
-                      .attr("font-size","10px");
+                      .attr("font-size","8px");
 
 
 
@@ -396,11 +400,66 @@ function sub_Total(id){
                  .attr("font-size", "8px")
                  .attr("fill", "black")
                  .attr("text-anchor", "middle");
+      });
+
+        d3.json("Total_population.json",function(dataset){
 
 
 
-     
-   });
+                  console.log(dataset.filter(function(d){return d.id==id})[0].history);
+
+                  data=dataset.filter(function(d){return d.id==id})[0].history;
+
+                var line = d3.svg.line()
+                  .interpolate("monotone")
+                  .x(function(d,i){return xScale(i);})
+                  .y(function(d){return sub_height-yScale_right(d)-top_padding;});
+
+
+                  var path=sub_svg_Total.selectAll("path")
+                  .append("path")
+                  .attr("d", line(data))
+                  .attr("class",".path_popultation");
+
+
+                  //添加系列的小圆点
+                  sub_svg_Total.selectAll("circle")
+                  .data(data)
+                  .enter()
+                  .append("circle");
+
+
+              sub_svg_Total.selectAll(".path_popultation")
+                  .data(data)
+                  .transition()
+                  .duration(300)
+                  .attr("d", line(data))
+                  .style("fill","#F00")
+                  .style("fill","none")
+                  .style("stroke-width",1)
+                  .style("stroke","#F00")
+                  .style("stroke-opacity",0.9);
+
+
+                  //添加系列的小圆点
+              sub_svg_Total.selectAll("circle")
+                  .data(data)
+                  .transition()
+                  .duration(300)
+                  .attr("cx", function(d,i) {
+                          return xScale(i)+xScale.rangeBand()/2;
+                          })
+                  .attr("cy", function(d) {
+                        return sub_height-yScale_right(d)-top_padding;
+                        })
+                  .attr("r",5)
+                  .attr("fill", function(d) {
+                  return "rgb( " + (d%255) + ",0, 0)";
+                  });
+
+
+
+        });
 }
 
 
