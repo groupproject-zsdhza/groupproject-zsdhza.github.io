@@ -402,27 +402,21 @@ function sub_Total(id){
                  .attr("text-anchor", "middle");
       });
 
-        d3.json("Total_population.json",function(dataset){
+         d3.json("Total_population.json",function(dataset){
 
+              var data1=[0];
 
-
-                  console.log(dataset.filter(function(d){return d.id==id})[0].history);
-
-                  data=dataset.filter(function(d){return d.id==id})[0].history;
+               //console.log(dataset.filter(function(d){return d.id==id})[0].history);
+               data=dataset.filter(function(d){return d.id==id})[0].history;
 
                 var line = d3.svg.line()
-                  .interpolate("monotone")
-                  .x(function(d,i){return xScale(i);})
+                  .interpolate("linear")
+                  .x(function(d,i){return xScale(i)+xScale.rangeBand()/2;})
                   .y(function(d){return sub_height-yScale_right(d)-top_padding;});
 
 
-                  var path=sub_svg_Total.selectAll("path")
-                  .append("path")
-                  .attr("d", line(data))
-                  .attr("class",".path_popultation");
 
-
-                  //添加系列的小圆点
+        //           //添加系列的小圆点
                   sub_svg_Total.selectAll("circle")
                   .data(data)
                   .enter()
@@ -430,20 +424,26 @@ function sub_Total(id){
 
 
               sub_svg_Total.selectAll(".path_popultation")
-                  .data(data)
-                  .transition()
-                  .duration(300)
-                  .attr("d", line(data))
-                  .style("fill","#F00")
-                  .style("fill","none")
-                  .style("stroke-width",1)
-                  .style("stroke","#F00")
-                  .style("stroke-opacity",0.9);
+                    .data(data1)
+                    .enter()
+                    .append("path")
+                    .attr("class","path_popultation");
+
+              sub_svg_Total.selectAll(".path_popultation")
+                    .transition()
+                    .duration(300)
+                    .attr("d", line(data))
+                    .style("fill","#F00")
+                    .style("fill","black")
+                    .style("stroke-width",1)
+                    .style("stroke","#F00")
+                    .style("stroke-opacity",0.9)
+                    .attr("z-index","5");
+
 
 
                   //添加系列的小圆点
               sub_svg_Total.selectAll("circle")
-                  .data(data)
                   .transition()
                   .duration(300)
                   .attr("cx", function(d,i) {
@@ -455,11 +455,12 @@ function sub_Total(id){
                   .attr("r",5)
                   .attr("fill", function(d) {
                   return "rgb( " + (d%255) + ",0, 0)";
-                  });
+                  })
+                  .attr("z-index","5");
 
 
 
-        });
+         });
 }
 
 
