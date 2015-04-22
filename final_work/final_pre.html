@@ -5,7 +5,6 @@
     <title>Force-Directed Map: GDP and Population</title>
     <script type="text/javascript" src="d3.js"></script>
     <style type="text/css">
-
 .axis path,.axis line {
          fill: none;
          stroke: black;
@@ -15,6 +14,12 @@
          font-family: sans-serif;
          font-size: 9px;
 }
+#Ave_xaxis text{
+
+    display:none;
+
+}
+
 #province {
 
       font-size:18px;
@@ -58,10 +63,11 @@ h1{
 
 
 var width = 1280,
-    height = 800;
+    height = 2000;
 
 var axismark_ave=0;
 var axismark_total=0;
+var axismark_ave_new=0;
 
 var sub_width=350;
     sub_height=250;
@@ -99,6 +105,14 @@ var sub_svg_Ave= svg.append("svg")
     .attr("height", sub_height)
     .attr("x",850)
     .attr("y",400)
+    .attr("display","none");
+
+var sub_svg_Ave_new= svg.append("svg")
+    .attr("class","sub_chart")
+    .attr("width", sub_width+50)
+    .attr("height", sub_height+50)
+    .attr("x",850)
+    .attr("y",700)
     .attr("display","none");
 
 
@@ -178,6 +192,8 @@ d3.json("china.json", function(states) {
           sub_Total(d.feature.id);
 
           sub_Ave(d.feature.id);
+
+          sub_Ave_new(d.feature.id);
 
 
       })
@@ -322,16 +338,18 @@ function sub_Total(id){
                       .attr("font-family", "Georgia");
 
                 var  ymark=sub_svg_Total.append("text")
-                      .attr("x",40)
-                      .attr("y",30)
+                      .attr("dx",-150)
+                      .attr("dy",50)
+                      .attr("transform", "rotate(-90)")
                       .text("GDP/0.1Billion Yuan")
-                      .attr("font-size","8px");
+                      .attr("font-size","10px");
 
                 var  ymark_right=sub_svg_Total.append("text")
-                      .attr("x",250)
-                      .attr("y",25)
                       .text("Population/10 Thousand")
-                      .attr("font-size","8px");
+                      .attr("dx",-150)
+                      .attr("dy",394)
+                      .attr("transform", "rotate(-90)")
+                      .attr("font-size","10px");
 
 
 
@@ -546,9 +564,10 @@ function sub_Ave(id){
 
 
         var  ymark=sub_svg_Ave.append("text")
-                      .attr("x",40)
-                      .attr("y",50)
                       .text(" GDP per capita / Yuan per person")
+                       .attr("dx",-200)
+                      .attr("dy",50)
+                      .attr("transform", "rotate(-90)")
                       .attr("font-size","10px");
 
     }
@@ -619,6 +638,161 @@ function sub_Ave(id){
                  .attr("text-anchor", "middle");
      
 
+
+
+   });
+}
+
+function sub_Ave_new(id){
+
+
+
+      var top_padding=20;
+      var left_padding=20;
+
+
+      var xScale=d3.scale.ordinal()
+                  .domain(d3.range(31))
+                  .rangeRoundBands([sub_width,left_padding*2],0.05);
+
+      var yScale=d3.scale.linear()
+                  .domain([0,95000])
+                  .range([0,sub_height-top_padding*2]);
+
+      var yScale2=d3.scale.linear()
+                  .domain([0,95000])
+                  .range([sub_height-top_padding*2,0]);
+
+
+
+      if(axismark_ave_new==0){
+        
+        axismark_ave_new=1;
+
+      var xAxis = d3.svg.axis();
+
+          xAxis.scale(xScale).orient("bottom").ticks(5);
+
+          sub_svg_Ave_new.append("g")
+          .attr("class","axis")
+          .attr("id","Ave_xaxis")
+          .call(xAxis)
+          .attr("transform", "translate(0," + (sub_height-top_padding) + ")");
+
+      var yAxis = d3.svg.axis();
+
+          yAxis.scale(yScale2).orient("left").ticks(5);
+          
+          sub_svg_Ave_new.append("g")
+                          .attr("class","axis")
+                          .attr("id","yaxis")
+                          .call(yAxis)
+                          .attr("transform", "translate(" + left_padding*2 + "," + top_padding + ")");
+
+      var formatAsPercentage = d3.format(".1");
+      
+      xAxis.tickFormat(formatAsPercentage);
+
+          sub_svg_Ave_new.append("text")
+                      .attr("x",80)
+                      .attr("y",13)
+                      .text("GDP per capita in Previous 9 Years");
+
+       var  province=sub_svg_Ave_new.append("text")
+                      .attr("x",230)
+                      .attr("y",30)
+                      .text("")
+                      .attr("id","province");
+
+
+        var  ymark=sub_svg_Ave_new.append("text")
+                      .attr("dx",-200)
+                      .attr("dy",50)
+                       .attr("transform", "rotate(-90)")
+                      .text(" GDP per capita / Yuan per person")
+                      .attr("font-size","10px");
+
+         var legend=[2012,2011,2010,2009,2008,2007,2006,2005,2004];
+
+               sub_svg_Ave_new.selectAll(".legend")
+                    .data(legend.sort(d3.ascending))
+                    .enter()
+                    .append("circle")
+                    .attr("cy",function(d,i){
+                      return 80+i*12})
+                    // .data(function(d,i){return i})
+                    .attr("cx",350)
+                    .attr("r",4)
+                    .attr("class",".legend")
+                    .attr("fill",function(d,i){return colors(i)});
+
+              sub_svg_Ave_new.selectAll(".legend_word")
+                    .data(legend.sort(d3.ascending))
+                    .enter()
+                    .append("text")
+                    .attr("y",function(d,i){
+                      return 80+i*12+2})
+                    // .data(function(d,i){return i})
+                    .attr("x",354)
+                    .attr("class",".legend_word")
+                    .attr("font-size",9)
+                    .text(function(d){return d});
+
+    }
+
+       d3.json("Ave_GDP.json", function(dataset) {
+                //console.log(id);
+              // dataset.forEach(function(d){console.log(d);});
+               // console.log(dataset);
+                
+              
+              var group=sub_svg_Ave_new.selectAll(".Ave_rect")
+                  .data(dataset)
+                  .enter()
+                  .append("g")
+                  .attr("class","Ave_rect")
+                  .attr("id",function(d,i){return d.id})
+                  .attr("transform", function(d,i) { return "translate(" + (xScale(i)+5) + ",0)"; });
+
+                group.selectAll(".dot_ave")
+                    .data(function(d,i){return d.history})
+                    .enter()
+                    .append("circle")
+                    .attr("cy",function(d){
+                      return sub_height-yScale(d)-top_padding;
+
+                      })
+                    // .data(function(d,i){return i})
+                    .attr("cx",0)
+                    .attr("r",3)
+                    .attr("class","dot_ave")
+                    .attr("check",function(d,i) {return d +","+i})
+                    .attr("fill",function(d,i){return colors(i)});
+
+              
+
+               group.selectAll("Ave_xmark")
+                    .data(function(d){return d.name})
+                    .enter()
+                    .append("text")
+                    .attr("y",function(d,i){return i*7+243})
+                    .attr("x",-3) 
+                    .attr("class","Ave_xmark")
+                    .attr("font-size","8")
+                    .text(function(d,i){return d});
+                
+              /*  group.selectAll("back_mark")
+                    .data(function(d){return d.id})
+                    .enter()
+                    .append("svg")
+                    .attr("y",0)
+                    .attr("x",0) 
+                    .attr("width",xScale.rangeBand())
+                    .attr("height",function(){return sub_height-top_padding;})
+                    .attr("class","back_mark")
+                    .attr("fill","grey")
+                    .call(function(){console.log("00")});
+                    //.attr("opacity",function(d){ if(d==id) return 0.5; else return 0});*/
 
 
    });
