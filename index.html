@@ -46,6 +46,7 @@ line {
 
 h1, h2{
   text-align: center;
+  font-family: Garamond;
 }
 
 h2{
@@ -62,8 +63,9 @@ h2{
   
 <body>
 <h1>Population and GDP of China: Relationship and Development</h1> 
-<h2>Team: TAR (Team member: Ziang Hu & Shaodong Zhang)</h2>
-<p align="center"><a href="http:///"><em>See our previous work here</em></a> </p>
+<h2>Team: TAR (Team member: Ziang Hu & Shaodong Zhang)   <a href="http://groupproject-zsdhza.github.io/previous_work.html"><em>   See our previous work here</em></a>
+</h2>
+
 
 <script type="text/javascript">
 
@@ -95,7 +97,7 @@ var force = d3.layout.force().size([width, height]);
 var svg = d3.select("body").append("svg")
     .attr("width", width)
     .attr("height", height)
-    .style("margin-top","-50px");
+    .style("margin-top","-20px");
 
 var sub_svg_Total = svg.append("svg")
     .attr("class","sub_chart")
