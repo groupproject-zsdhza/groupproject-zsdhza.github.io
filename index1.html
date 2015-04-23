@@ -411,7 +411,7 @@ function sub_Total(id){
                   .attr("height",function(d){
                     return yScale(d);
                   })
-                  .style("fill",function(d){return colors(d)});
+                  .style("fill",function(d,i){return colors(i)});
 
 
               sub_svg_Total.selectAll(".Total_mark")
@@ -631,7 +631,7 @@ function sub_Ave(id){
                   .attr("height",function(d){
                     return yScale(d);
                   })
-                  .style("fill",function(d){return colors(d)});
+                  .style("fill",function(d,i){return colors(i)});
 
 
               sub_svg_Ave.selectAll(".Ave_mark")
