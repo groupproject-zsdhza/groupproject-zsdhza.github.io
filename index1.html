@@ -740,7 +740,7 @@ function sub_Ave_new(id){
                     .attr("fill",function(d,i){return colors(i)});
 
               sub_svg_Ave_new.selectAll(".legend_word")
-                    .data(legend.sort(d3.ascending))
+                    .data(legend.sort(d3.descending))
                     .enter()
                     .append("text")
                     .attr("y",function(d,i){
