@@ -382,7 +382,7 @@ function sub_Total(id){
                   .append("text")
                   .attr("class","Total_mark");
 
-              d3.select("#province").text(function(){return "("+dataset.filter(function(d){return d.id==id})[0].name+")";});
+              d3.selectAll("#province").text(function(){return "("+dataset.filter(function(d){return d.id==id})[0].name+")";});
 
                data=dataset.filter(function(d){return d.id==id})[0].history;
 
@@ -707,9 +707,16 @@ function sub_Ave_new(id){
           sub_svg_Ave_new.append("text")
                       .attr("x",350)
                       .attr("y",13)
-                      .text("Overview: GDP per capita in Previous 9 Years");
+                      .text("Overview: GDP per capita in Previous 9 Years")
+                       .attr("font-family", "Georgia");
 
-    
+        var  province=sub_svg_Ave_new.append("text")
+                      .attr("x",500)
+                      .attr("y",30)
+                      .style("text-anchor", "middle")
+                      .text("")
+                      .attr("id","province")
+                      .attr("font-family", "Georgia");
 
         var  ymark=sub_svg_Ave_new.append("text")
                       .attr("dx",-200)
@@ -758,7 +765,7 @@ function sub_Ave_new(id){
                   .append("g")
                   .attr("class","Ave_rect")
                   .attr("id",function(d,i){return d.id})
-                  .attr("transform", function(d,i) { return "translate(" + (xScale(i)+5) + ",0)"; });
+                  .attr("transform", function(d,i) { return "translate(" + (xScale(i)+10) + ",0)"; });
 
                 group.selectAll(".dot_ave")
                     .data(function(d,i){return d.history})
@@ -788,20 +795,30 @@ function sub_Ave_new(id){
                     .attr("text-anchor","middle")
                     .style("font-family","Times New Roman")
                     .text(function(d,i){return d});
-                
-              /*  group.selectAll("back_mark")
-                    .data(function(d){return d.id})
-                    .enter()
-                    .append("svg")
-                    .attr("y",0)
-                    .attr("x",0) 
-                    .attr("width",xScale.rangeBand())
-                    .attr("height",function(){return sub_height-top_padding;})
-                    .attr("class","back_mark")
-                    .attr("fill","grey")
-                    .call(function(){console.log("00")});
-                    //.attr("opacity",function(d){ if(d==id) return 0.5; else return 0});*/
 
+
+                sub_svg_Ave_new.selectAll(".Back_mark")
+                    .data(dataset)
+                    .enter()
+                    .append("rect")
+                    .attr("y",top_padding-1)
+                    .attr("x",function(d,i){return xScale(i);}) 
+                    .attr("width",xScale.rangeBand())
+                    .attr("height",sub_height-top_padding*2)
+                    .attr("check",function(d){return d.id})
+                    .attr("class","Back_mark")
+                    .attr("fill","grey")
+                    .attr("z-index","-1")
+                    .attr("opacity","0");
+
+                sub_svg_Ave_new.selectAll(".Back_mark")
+                    .transition()
+                    .duration(300)
+                    .attr("opacity",function(d){ 
+                      if(d.id==id) return 0.3;
+                       else return 0});
+
+                
 
    });
 }
