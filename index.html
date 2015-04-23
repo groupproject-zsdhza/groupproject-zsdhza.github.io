@@ -1,271 +1,809 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-<head>
-<meta charset="UTF-8">
-<script src="jquery-1.11.2.js"></script> 
-<script src="d3.js"></script>
-<script type='text/javascript' src="jsdocument.js"></script>
-<link type="text/css" rel="stylesheet" href="cssdocument.css"/>
-<title>Group Website</title>
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  <head>
+    <meta charset="utf-8">
+    <title>Force-Directed Map: GDP and Population</title>
+    <script type="text/javascript" src="d3.v2.js"></script>
+    <style type="text/css">
+.axis path,.axis line {
+         fill: none;
+         stroke: black;
+         shape-rendering: crispEdges;
+}
+.axis text {
+         font-family: sans-serif;
+         font-size: 9px;
+}
+#Ave_xaxis text{
 
-  ga('create', 'UA-61797634-1', 'auto');
-  ga('send', 'pageview');
+    display:none;
 
-</script>
-</head>
+}
 
+#province {
+
+      font-size:18px;
+}
+
+path {
+  fill: #aaa;
+  fill-opacity: .8;
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+
+line {
+  stroke: Crimson;
+}
+
+
+.point {
+  font-size: 10px ;
+  font-family: Verdana;
+  fill:#000000;
+}
+
+
+h1, h2{
+  text-align: center;
+}
+
+h2{
+  font-size: 20px;
+}
+
+.sub_chart{
+
+  background-color: black;
+}
+
+</style>
+  </head>
+  
 <body>
-	   <h1>Introduction of Team members</h1>
-    <h2>Touch us to know more</h2>
+<h1>Population and GDP of China: Relationship and Development</h1> 
+<h2>Team: TAR (Team member: Ziang Hu & Shaodong Zhang)</h2>
+<p align="center"><a href="http:///"><em>See our previous work here</em></a> </p>
+
+<script type="text/javascript">
+
+
+var width = 1400,
+    height = 1700;
+
+var axismark_ave=0;
+var axismark_total=0;
+var axismark_ave_new=0;
+
+var sub_width=350;
+    sub_height=250;
+
+var colors = d3.scale.category20();
+
+var projection = d3.geo.azimuthal()
+.mode("equidistant")
+.origin([105, 35])
+.scale(900)
+.translate([500, 400]);
+// .rotate([-20,0])
+// .clipAngle(180 - 1e-4);
+
+var path = d3.geo.path().projection(projection);
+var force = d3.layout.force().size([width, height]);
     
-    <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="80%" color=#666 SIZE=3>
-	<div id="grouplink"><a href="https://github.com/groupproject-zsdhza/groupproject-zsdhza.github.io" >Group Github Link</a></div>
-    <ul id="members">
-    <li>
-    <img src="materials/hza.png"  alt="" width="130" height="130"/>
-    <div><p><strong>Hi, I am Ziang Hu</strong></p>
-      <p>Off-campus student from Zhejiang University, China</p>
-      <p>Major in Industrial Engineering</p>
-       <p><strong>Both of us are HTML beginners.</strong></p>
-    </div></li>
-    <br/>
-    <li>
-    <img src="materials/zsd.png"  alt="" width="130" height="130"/>
-    <div><p><strong>Hi, I am Shaodong Zhang</strong></p>
-      <p>Off-campus student from Zhejiang University, China</p>
-      <p>Major in Mechatronics Engineering</p>
-       <p><strong>My pleasure to have class with you all.</strong></p>
- 
-    
-    
-    
-    </div></li>
-    </ul>
-    <br/>
-    <br/>
-    
-    
-    <h1>Potential Data Sources</h1>
-    <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="80%" color=#666 SIZE=3>
-    <ol>
-    	<li>National Bureau of Statistics of China <a href="http://data.stats.gov.cn/">http://data.stats.gov.cn/</a></li><p class="comment">"We can find the data published by Chinese government here."<p>
-	<li>Hangzhou statistical information Website <a href="http://www.hzstats.gov.cn/web/">http://www.hzstats.gov.cn/web/</a></li><p class="comment">"This is the public data website of our city."</p>
-	<li>Google public Data <a href="http://www.google.com/publicdata/">http://www.google.com/publicdata/</a></li><p class="comment">We can search any data here.</p>
-	<li>Statistics China <a href="http://www.itongji.cn/">http://www.itongji.cn</a></li><p class="comment"> "A professional statistics website in China."</p>
-	<li>International Energy Agency <a href="http://www.iea.org/">http://www.iea.org/</a></li><p class="comment">"We can find the data about energy here."</p>
-	<li> United Nations Statistic Division <a href="http://unstats.un.org/">http://unstats.un.org/</a></li><p class="comment"> "Open data from US government."</p>
-	<li>the U.S. Government’s open data <a href="http://www.data.gov/">http://www.data.gov/</a></li><p class="comment">"Open data from US government."</p>
-	<li>Yahoo Finance <a href="http://finance.yahoo.com/">http://finance.yahoo.com/</a></li><p class="comment"> "Many data about Finance here."</p>
-	<li>Baidu Statistics <a href="http://tongji.baidu.com/">http://tongji.baidu.com/</a></li><p class="comment">"We can even use it to collect data by our own."</p>
-	<li>National Oceanographic Data Center <a href="http://www.nodc.noaa.gov/General/temperature.html">http://www.nodc.noaa.gov/General/temperature.html</a></li><p class="comment">"A lot of data about temperature. "</p>
-   
-    </ol>
-    
-    <br/>
-    <br/>
-    <h1>Data Visualization</h1>
-    <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="80%" color=#666 SIZE=3>
-    <div align="center">
-    <iframe
-    	align
-  	style="border: 0px;"
-  	src="https://public.tableausoftware.com/profile/ziang.hu#!/vizhome/HW3_11/1?:embed=y&amp;:from_wg=true"
-  	scrolling="no"
-  	width="1000px"
-  	height="800px">
-    </iframe></div>
-    
-    <br/>
-    <br/>
-    <h1>Story of Data</h1>
-    <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="80%" color=#666 SIZE=3>
-    <div align="center" class="comment">
-    	<p>GDP is always calculated using the expenditures approach, whose formula is</p>
-<p>GDP = C + G + I + (X - M)</p>
-<p>In the formula, C is represented by Consumption; G refers to Government Spending; I is gross investment and (X - M) is the net exports.</p>
-  <p>Seemingly there is no direct relationship between GDP and population.</p>
-  <p>However, GDP climbs to the higher position with the increasing population and when the population growth rate decrease, GDP has a faster increase.</p>
-  <p>The phenomenon may be explained as follows. More new-borns spur the demand for consumption, but too quick growth of population consumes more resource in country so the steps of development are disturbed.</p>
-  <p>All above is just our guess :)</p>  	
-    </div>
-
-<br/>
-    <br/>
-
-
-
-<h1>Data Visualization with D3</h1>
-    <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="80%" color=#666 SIZE=3>
- 
-<script>
-
-var margin = {top: 40, right: 20, bottom: 30, left: 40},
-    width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
-
-var x0 = d3.scale.ordinal()
-    .rangeRoundBands([width, 0], .1);
-
-var x1 = d3.scale.ordinal();
-
-var y = d3.scale.linear()
-    .range([height, 0]);
-
-var color = d3.scale.ordinal()
-    .range([ "#8a89a6", "#ff8c00"]);
-
-var xAxis = d3.svg.axis()
-    .scale(x0)
-    .orient("bottom");
-
-var yAxis = d3.svg.axis()
-    .scale(y)
-    .orient("left")
-    .tickFormat(d3.format(".2s"));
 
 var svg = d3.select("body").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    .attr("width", width)
+    .attr("height", height)
+    .style("margin-top","-50px");
 
-d3.csv("gdpdata.csv", function(error, data) {
-  var ageNames = d3.keys(data[0]).filter(function(key) { return key !== "Year"; });
+var sub_svg_Total = svg.append("svg")
+    .attr("class","sub_chart")
+    .attr("width", sub_width+50)
+    .attr("height", sub_height)
+    .attr("x",900)
+    .attr("y",100)
+    .attr("display","none");;
 
-  data.forEach(function(d) {
-    d.ages = ageNames.map(function(name) { return {name: name, value: +d[name]}; });
+var sub_svg_Ave= svg.append("svg")
+    .attr("class","sub_chart")
+    .attr("width", sub_width+50)
+    .attr("height", sub_height)
+    .attr("x",900)
+    .attr("y",400)
+    .attr("display","none");
+
+var sub_svg_Ave_new= svg.append("svg")
+    .attr("class","sub_chart")
+    .attr("width", sub_width+1000)
+    .attr("height", sub_height+500)
+    .attr("x",50)
+    .attr("y",700)
+    .attr("display","none");
+
+
+/*sub_svg_Total.append("rect")
+        .attr("x",0)
+        .attr("y",0)
+        .attr("width", sub_width)
+        .attr("height", sub_height);
+
+    sub_svg_Ave.append("rect")
+        .attr("x",0)
+        .attr("y",0)
+        .attr("width", sub_width)
+        .attr("height", sub_height);*/
+
+d3.json("china.json", function(states) {
+  var nodes = [],
+      links = [];
+
+
+
+
+  states.features.forEach(function(d, i) {
+    if (d.id == "92" || d.id == "95" || d.id == "72") return;
+    var centroid = path.centroid(d);
+    centroid.x = centroid[0];
+    centroid.y = centroid[1];
+    centroid.feature = d;
+    nodes.push(centroid);
   });
 
-  //console.log(data);
+  d3.geom.delaunay(nodes).forEach(function(d) {
+    links.push(edge(d[0], d[1]));
+    links.push(edge(d[1], d[2]));
+    links.push(edge(d[2], d[0]));
+  });
 
-  x0.domain(data.map(function(d) { return d.Year; }));
-  x1.domain(ageNames).rangeRoundBands([0, x0.rangeBand()]);
-  y.domain([0, d3.max(data, function(d) { return d3.max(d.ages, function(d) { return d.value; }); })]);
+  force.gravity(0)
+       .charge(0)
+       .nodes(nodes)
+       .links(links)
+       .linkDistance(function(d) { return d.distance; })
+       .start();
 
-  svg.append("g")
-      .attr("class", "x axis")
-      .attr("transform", "translate(0," + height + ")")
-      .call(xAxis);
+  var link = svg.selectAll("line")
+      .data(links)
+      .enter().append("line")
+      .attr("x1", function(d) { return d.source.x; })
+      .attr("y1", function(d) { return d.source.y; })
+      .attr("x2", function(d) { return d.target.x; })
+      .attr("y2", function(d) { return d.target.y; })
+      .attr("opacity","0.5");
 
-  svg.append("g")
-      .attr("class", "y axis")
-      .call(yAxis)
-      .append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 6)
-      .attr("dy", ".71em")
-      .style("text-anchor", "end")
-      .text("GDP&Population");
-
-                 var gdp=svg.append("text")
-                          .attr("x","0px")
-                          .attr("y","-5px")
-                          .attr("fill","black")
-                          .attr("font-size","15px")
-                          .text("(Move on the rect to see the detail)");
-
-
-
-  var year= svg.selectAll(".year")
-      .data(data)
-    .enter().append("g")
-      .attr("class", "g")
-      .attr("transform", function(d) { return "translate(" + x0(d.Year) + ",0)"; });
-
-  year.selectAll("rect")
-      .data(function(d) { return d.ages; })
-      .enter()
-      .append("rect")
-      .attr("width", x1.rangeBand())
-      .attr("x", function(d) { return x1(d.name); })
-      .attr("y", function(d) { return y(d.value); })
-      .attr("height", function(d) { return height - y(d.value); })
-      .style("fill", function(d) { return color(d.name); })
-      .attr("class", "rect")
-      .on("mouseover", function(d,i) {
-
-      
-            if(i==0)
-            {
-                  var gdp=svg.append("text")
-                          .attr("x","200px")
-                          .attr("y","20px")
-                          .attr("class","tooltip")
-                          .attr("fill","black")
-                          .text(function(){return "GDP(0.1 Billion):"+d.value});
-            }
-            if(i==1)
-            {
-
-                  var popu=svg.append("text")
-                          .attr("x","200px")
-                          .attr("y","40px")
-                          .attr("class","tooltip")
-                          .attr("fill","black")
-                          .text(function(){return"Population(10 Thousand):"+d.value});
-
-
-            }
-
-
-          })
-      .on("mouseout", function() { 
-              d3.selectAll(".tooltip").remove();
-          });
-
-  var legend = svg.selectAll(".legend")
-      .data(ageNames.slice().reverse())
+  var node = svg.selectAll("g")
+      .data(nodes)
       .enter().append("g")
-      .attr("class", "legend")
-      .attr("transform", function(d, i) { return "translate(-70," + (i * 20-35) + ")"; });
+      .attr("transform", function(d) { return "translate(" + -d.x + "," + -d.y + ")"; })
+      .call(force.drag)
+      .append("path")
+      .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
+      .attr("d", function(d) { return path(d.feature); })
+      .style("fill", function(d,i) {
+          value1=255-d.feature.properties.Ave_GDP/52822*255;
+          value2=value1+20;
+          //value2=d.feature.properties.Ave_GDP%255;
+          return "rgb(220, "+Math.round(value2)+", "+Math.round(value1)+")";
+        })
 
-  legend.append("rect")
-      .attr("x", width - 18)
-      .attr("width", 18)
-      .attr("height", 18)
-      .style("fill", color);
+      .on("mouseover",function(d){
 
-  legend.append("text")
-      .attr("x", width - 24)
-      .attr("y", 9)
-      .attr("dy", ".35em")
-      .style("text-anchor", "end")
-      .text(function(d) { return d; });
+         // console.log(d.feature.id);
+
+          d3.select(this).style("fill","grey");
+
+          d3.selectAll(".sub_chart").attr("display","block");
+
+          sub_Total(d.feature.id);
+
+          sub_Ave(d.feature.id);
+
+          sub_Ave_new(d.feature.id);
+
+
+      })
+      .on("mouseout",function(d,i){
+
+           d3.select(this).style("fill", function(d,i) {
+          value1=255-d.feature.properties.Ave_GDP/52822*255;
+          value2=value1+20;
+          //value2=d.feature.properties.Ave_GDP%255;
+          return "rgb(220, "+Math.round(value2)+", "+Math.round(value1)+")";
+        })
+
+        //  d3.selectAll(".sub_chart").attr("display","none");
+
+      });
+      //.attr("class","point");
+
+  var nodes_text = svg.selectAll(".point")  
+                    .data(nodes)  
+                    .enter()  
+                    .append("text")
+                    .attr("class","point")  
+                    .attr("dx",function(d) { return d.x ; })  
+                    .attr("dy",function(d) { return d.y ; })  
+                    .style("text-anchor", "middle")
+                    .text(function(d){  
+                         return d.feature.properties.english_name;  
+                    })
+                    .attr("pointer-events","none"); 
+
+
+  force.on("tick", function() {
+    link.attr("x1", function(d) { return d.source.x; })
+        .attr("y1", function(d) { return d.source.y; })
+        .attr("x2", function(d) { return d.target.x; })
+        .attr("y2", function(d) { return d.target.y; });
+  
+    node.attr("transform", function(d) {
+      return "translate(" + d.x + "," + d.y + ")";})
+
+
+    nodes_text.attr("dx",function(d){ return d.x })
+        .attr("dy",function(d){ return d.y }); 
+  })
+    
+
 });
 
-</script>
 
-<br/><br/>
+function edge(a, b) {
+  var dx = a[0] - b[0], dy = a[1] - b[1];
+  return {
+    source: a,
+    target: b,
+    distance: Math.sqrt(dx * dx + dy * dy)
+  };
+}
 
-    <h1>Data from Google Analytics</h1>
-    <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="80%" color=#666 SIZE=3>
-    <div align="center" class="comment">
-      <p>The codes have been added to the source codes and data from Google Analytics is presented as below</p>
-       <p><img src="GA_data.png"  alt="" width="1200" height="400"/></p>
-    </div>
-
-<br/><br/>
-    <h1>Join the Discussion!</h1>
-    <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="80%" color=#666 SIZE=3>
-<div id="disqus_thread"></div>
-<script type="text/javascript">
-    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-    var disqus_shortname = 'groupproject'; // Required - Replace '<example>' with your forum shortname
-
-    /* * * DON'T EDIT BELOW THIS LINE * * */
-    (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+function sub_Total(id){
 
 
-    </body>
+
+      var top_padding=20;
+      var left_padding=20;
+
+
+      var xScale=d3.scale.ordinal()
+                  .domain(d3.range(9))
+                  .rangeRoundBands([sub_width,left_padding*2],0.05);
+
+      var yScale=d3.scale.linear()
+                  .domain([0,63000])
+                  .range([0,sub_height-top_padding*2]);
+
+      var yScale2=d3.scale.linear()
+                  .domain([0,63000])
+                  .range([sub_height-top_padding*2,0]);
+
+       var yScale_right=d3.scale.linear()
+                  .domain([0,11000])
+                  .range([0,sub_height-top_padding*2]);
+
+      var yScale_right2=d3.scale.linear()
+                  .domain([0,11000])
+                  .range([sub_height-top_padding*2,0]);
+
+
+
+
+      if(axismark_total==0){
+        
+        axismark_total=1;
+
+      var xAxis = d3.svg.axis();
+
+          xAxis.scale(xScale).orient("bottom").ticks(5).tickValues([2012,2011,2010,2009,2008,2007,2006,2005,2004]);
+
+          sub_svg_Total.append("g")
+          .attr("class","axis")
+          .attr("id","xaxis")
+          .call(xAxis)
+          .attr("transform", "translate(0," + (sub_height-top_padding) + ")");
+
+      var yAxis = d3.svg.axis();
+
+          yAxis.scale(yScale2).orient("left").ticks(5);
+          
+          sub_svg_Total.append("g")
+                          .attr("class","axis")
+                          .attr("id","yaxis")
+                          .call(yAxis)
+                          .attr("transform", "translate(" + left_padding*2 + "," + top_padding + ")");
+
+
+      var yAxis_right = d3.svg.axis();
+
+          yAxis_right.scale(yScale_right2).orient("right").ticks(5);
+          
+          sub_svg_Total.append("g")
+                          .attr("class","axis")
+                          .attr("id","yaxis")
+                          .call(yAxis_right)
+                          .attr("transform", "translate(" + sub_width +" ," + top_padding + ")")
+                          .attr("fill","red");
+
+      var formatAsPercentage = d3.format(".1");
+      
+      xAxis.tickFormat(formatAsPercentage);
+
+          sub_svg_Total.append("text")
+                      .attr("x",55)
+                      .attr("y",13)
+                      .text("Population and GDP in Previous 9 Years")
+                      .style("font-family", "Georgia");
+
+       var  province=sub_svg_Total.append("text")
+                      .attr("x",195)
+                      .attr("y",30)
+                      .style("text-anchor", "middle")
+                      .text("")
+                      .attr("id","province")
+                      .attr("font-family", "Georgia");
+
+                var  ymark=sub_svg_Total.append("text")
+                      .attr("dx",-150)
+                      .attr("dy",50)
+                      .attr("transform", "rotate(-90)")
+                      .text("GDP/0.1Billion Yuan")
+                      .attr("font-size","10px");
+
+                var  ymark_right=sub_svg_Total.append("text")
+                      .text("Population/10 Thousand")
+                      .attr("dx",-150)
+                      .attr("dy",394)
+                      .attr("transform", "rotate(-90)")
+                      .attr("font-size","10px");
+
+
+
+    }
+
+       d3.json("Total_GDP.json", function(dataset) {
+                //console.log(id);
+                //console.log(dataset);
+                //console.log(dataset.filter(function(d){return d.id==id})[0].history);
+
+               var data=[0,0,0,0,0,0,0,0,0];
+              
+              var bars=sub_svg_Total.selectAll(".Total_rect")
+                  .data(data)
+                  .enter()
+                  .append("rect")
+                  .attr("class","Total_rect");
+
+              var texts=sub_svg_Total.selectAll(".Total_mark")
+                  .data(data)
+                  .enter()
+                  .append("text")
+                  .attr("class","Total_mark");
+
+              d3.select("#province").text(function(){return "("+dataset.filter(function(d){return d.id==id})[0].name+")";});
+
+               data=dataset.filter(function(d){return d.id==id})[0].history;
+
+               /* var xScale=d3.scale.ordinal()
+                  .domain(d3.range(data.length))
+                  .rangeRoundBands([0,sub_width],0.05);
+
+                 var yScale=d3.scale.linear()
+                  .domain([0,d3.max(data,function(d){return d;})])
+                  .range([0,sub_height-top_padding]);*/
+
+
+              sub_svg_Total.selectAll(".Total_rect")
+                  .data(data)
+                  .transition()
+                  .duration(500)
+                  .delay(function(d,i){return i/ dataset.length *1000;})
+                  .ease("linear")
+                  .attr("x",function(d,i){
+                    return(xScale(i));
+                    })
+                  .attr("y",function(d){
+                    return sub_height-yScale(d)-top_padding-1;
+                  })
+                  .attr("width",xScale.rangeBand())
+                  .attr("height",function(d){
+                    return yScale(d);
+                  })
+                  .style("fill",function(d){return colors(d)});
+
+
+              sub_svg_Total.selectAll(".Total_mark")
+                  .data(data)
+                  .transition()
+                  .duration(500)
+                  .delay(function(d,i){return i/ dataset.length *1000;})
+                  .ease("linear")
+                 .text(function(d){return d;})
+                 .attr("x", function(d,i){return xScale(i)+15;})
+                 .attr("y", function(d){return sub_height-yScale(d)-top_padding+8; })
+                 .attr("font-family", "sans-serif")
+                 .attr("font-size", "8px")
+                 .attr("fill", "black")
+                 .attr("text-anchor", "middle");
+      });
+             d3.json("Total_population.json",function(dataset){
+
+              var data1=[0];
+
+               //console.log(dataset.filter(function(d){return d.id==id})[0].history);
+               data=dataset.filter(function(d){return d.id==id})[0].history;
+
+                var line = d3.svg.line()
+                  .interpolate("basis")
+                  .x(function(d,i){return xScale(i)+xScale.rangeBand()/2;})
+                  .y(function(d){return sub_height-yScale_right(d)-top_padding;});
+
+
+
+        //           //添加系列的小圆点
+                  sub_svg_Total.selectAll("circle")
+                  .data(data)
+                  .enter()
+                  .append("circle");
+
+
+              sub_svg_Total.selectAll(".path_popultation")
+                    .data(data1)
+                    .enter()
+                    .append("path")
+                    .attr("class","path_popultation");
+
+              sub_svg_Total.selectAll(".path_popultation")
+                    .transition()
+                    .duration(300)
+                    .attr("d", line(data))
+                    .style("fill","none")
+                    .style("stroke-width",1)
+                    .style("stroke","#F00")
+                    .style("stroke-opacity",1)
+                    .attr("z-index","5");
+
+
+
+                  //添加系列的小圆点
+              sub_svg_Total.selectAll("circle")
+                  .transition()
+                  .duration(300)
+                  .attr("cx", function(d,i) {
+                          return xScale(i)+xScale.rangeBand()/2;
+                          })
+                  .attr("cy", function(d) {
+                        return sub_height-yScale_right(d)-top_padding;
+                        })
+                  .attr("r",3)
+                  .attr("fill", function(d) {
+                  return "rgb( " + (d%255) + ",0, 0)";
+                  })
+                  .attr("z-index","5");
+
+              var texts=sub_svg_Total.selectAll(".Total_mark_population")
+                  .data(data)
+                  .enter()
+                  .append("text")
+                  .attr("class","Total_mark_population");
+
+              sub_svg_Total.selectAll(".Total_mark_population")
+                  .data(data)
+                  .transition()
+                  .duration(500)
+                  .delay(function(d,i){return i/ dataset.length *1000;})
+                  .ease("linear")
+                 .text(function(d){return d;})
+                 .attr("x", function(d,i){return xScale(i)+15;})
+                 .attr("y", function(d){return sub_height-yScale_right(d)-top_padding-5; })
+                 .attr("font-family", "sans-serif")
+                 .attr("font-size", "8px")
+                 .attr("fill", "red")
+                 .attr("text-anchor", "middle");
+
+
+         });
+
+}
+
+
+function sub_Ave(id){
+
+
+
+      var top_padding=20;
+      var left_padding=20;
+
+
+      var xScale=d3.scale.ordinal()
+                  .domain(d3.range(9))
+                  .rangeRoundBands([sub_width,left_padding*2],0.05);
+
+      var yScale=d3.scale.linear()
+                  .domain([0,95000])
+                  .range([0,sub_height-top_padding*2]);
+
+      var yScale2=d3.scale.linear()
+                  .domain([0,95000])
+                  .range([sub_height-top_padding*2,0]);
+
+
+
+      if(axismark_ave==0){
+        
+        axismark_ave=1;
+
+      var xAxis = d3.svg.axis();
+
+          xAxis.scale(xScale).orient("bottom").ticks(5).tickValues([2012,2011,2010,2009,2008,2007,2006,2005,2004]);
+
+          sub_svg_Ave.append("g")
+          .attr("class","axis")
+          .attr("id","xaxis")
+          .call(xAxis)
+          .attr("transform", "translate(0," + (sub_height-top_padding) + ")");
+
+      var yAxis = d3.svg.axis();
+
+          yAxis.scale(yScale2).orient("left").ticks(5);
+          
+          sub_svg_Ave.append("g")
+                          .attr("class","axis")
+                          .attr("id","yaxis")
+                          .call(yAxis)
+                          .attr("transform", "translate(" + left_padding*2 + "," + top_padding + ")");
+
+      var formatAsPercentage = d3.format(".1");
+      
+      xAxis.tickFormat(formatAsPercentage);
+
+          sub_svg_Ave.append("text")
+                      .attr("x",80)
+                      .attr("y",13)
+                      .text("GDP per Capita in Previous 9 Years")
+                      .style("font-family","Georgia");
+
+       var  province=sub_svg_Ave.append("text")
+                      .attr("x",160)
+                      .attr("y",30)
+                      .text("")
+                      .attr("id","province")
+                      .style("font-family","Georgia")
+                      .attr("text-align","middle");
+
+
+        var  ymark=sub_svg_Ave.append("text")
+                      .text(" GDP per Capita / Yuan per person")
+                       .attr("dx",-200)
+                      .attr("dy",50)
+                      .attr("transform", "rotate(-90)")
+                      .attr("font-size","10px");
+
+    }
+
+       d3.json("Ave_GDP.json", function(dataset) {
+                //console.log(id);
+               // console.log(dataset);
+                //console.log(dataset.filter(function(d){return d.id==id})[0].history);
+
+               var data=[0,0,0,0,0,0,0,0,0];
+              
+              var bars=sub_svg_Ave.selectAll(".Ave_rect")
+                  .data(data)
+                  .enter()
+                  .append("rect")
+                  .attr("class","Ave_rect");
+
+              var texts=sub_svg_Ave.selectAll(".Ave_mark")
+                  .data(data)
+                  .enter()
+                  .append("text")
+                  .attr("class","Ave_mark");
+
+              d3.selectAll("#province").text(function(){return "("+dataset.filter(function(d){return d.id==id})[0].name+")";});
+
+               data=dataset.filter(function(d){return d.id==id})[0].history;
+
+               /* var xScale=d3.scale.ordinal()
+                  .domain(d3.range(data.length))
+                  .rangeRoundBands([0,sub_width],0.05);
+
+                 var yScale=d3.scale.linear()
+                  .domain([0,d3.max(data,function(d){return d;})])
+                  .range([0,sub_height-top_padding]);*/
+
+
+              sub_svg_Ave.selectAll(".Ave_rect")
+                  .data(data)
+                  .transition()
+                  .duration(500)
+                  .delay(function(d,i){return i/ dataset.length *1000;})
+                  .ease("linear")
+                  .attr("x",function(d,i){
+                    return(xScale(i));
+                    })
+                  .attr("y",function(d){
+                    return sub_height-yScale(d)-top_padding-1;
+                  })
+                  .attr("width",xScale.rangeBand())
+                  .attr("height",function(d){
+                    return yScale(d);
+                  })
+                  .style("fill",function(d){return colors(d)});
+
+
+              sub_svg_Ave.selectAll(".Ave_mark")
+                  .data(data)
+                  .transition()
+                  .duration(500)
+                  .delay(function(d,i){return i/ dataset.length *1000;})
+                  .ease("linear")
+                 .text(function(d){return d;})
+                 .attr("x", function(d,i){return xScale(i)+15;})
+                 .attr("y", function(d){return sub_height-yScale(d)-top_padding-5; })
+                 .attr("font-family", "sans-serif")
+                 .attr("font-size", "8px")
+                 .attr("fill", "black")
+                 .attr("text-anchor", "middle");
+     
+
+
+
+   });
+}
+
+function sub_Ave_new(id){
+
+
+
+      var top_padding=20;
+      var left_padding=20;
+
+
+      var xScale=d3.scale.ordinal()
+                  .domain(d3.range(31))
+                  .rangeRoundBands([sub_width*2.5,left_padding*5],0.05);
+
+      var yScale=d3.scale.linear()
+                  .domain([0,95000])
+                  .range([0,sub_height-top_padding*2]);
+
+      var yScale2=d3.scale.linear()
+                  .domain([0,95000])
+                  .range([sub_height-top_padding*2,0]);
+
+
+
+      if(axismark_ave_new==0){
+        
+        axismark_ave_new=1;
+
+      var xAxis = d3.svg.axis();
+
+          xAxis.scale(xScale).orient("bottom").ticks(5);
+
+          sub_svg_Ave_new.append("g")
+          .attr("class","axis")
+          .attr("id","Ave_xaxis")
+          .call(xAxis)
+          .attr("transform", "translate(0," + (sub_height-top_padding) + ")");
+
+      var yAxis = d3.svg.axis();
+
+          yAxis.scale(yScale2).orient("left").ticks(5);
+          
+          sub_svg_Ave_new.append("g")
+                          .attr("class","axis")
+                          .attr("id","yaxis")
+                          .call(yAxis)
+                          .attr("transform", "translate(" + left_padding*5 + "," + top_padding + ")");
+
+      var formatAsPercentage = d3.format(".1");
+      
+      xAxis.tickFormat(formatAsPercentage);
+
+          sub_svg_Ave_new.append("text")
+                      .attr("x",350)
+                      .attr("y",13)
+                      .text("Overview: GDP per capita in Previous 9 Years");
+
+    
+
+        var  ymark=sub_svg_Ave_new.append("text")
+                      .attr("dx",-200)
+                      .attr("dy",50)
+                       .attr("transform", "rotate(-90)")
+                      .text(" GDP per Capita / Yuan per person")
+                      .attr("font-size","10px");
+
+         var legend=[2012,2011,2010,2009,2008,2007,2006,2005,2004];
+
+               sub_svg_Ave_new.selectAll(".legend")
+                    .data(legend.sort(d3.ascending))
+                    .enter()
+                    .append("circle")
+                    .attr("cy",function(d,i){
+                      return 60+i*12})
+                    // .data(function(d,i){return i})
+                    .attr("cx",900)
+                    .attr("r",4)
+                    .attr("class",".legend")
+                    .attr("fill",function(d,i){return colors(i)});
+
+              sub_svg_Ave_new.selectAll(".legend_word")
+                    .data(legend.sort(d3.ascending))
+                    .enter()
+                    .append("text")
+                    .attr("y",function(d,i){
+                      return 60+i*12+2})
+                    // .data(function(d,i){return i})
+                    .attr("x",904)
+                    .attr("class",".legend_word")
+                    .attr("font-size",9)
+                    .text(function(d){return d});
+
+    }
+
+       d3.json("Ave_GDP.json", function(dataset) {
+                //console.log(id);
+              // dataset.forEach(function(d){console.log(d);});
+               // console.log(dataset);
+                
+              
+              var group=sub_svg_Ave_new.selectAll(".Ave_rect")
+                  .data(dataset)
+                  .enter()
+                  .append("g")
+                  .attr("class","Ave_rect")
+                  .attr("id",function(d,i){return d.id})
+                  .attr("transform", function(d,i) { return "translate(" + (xScale(i)+5) + ",0)"; });
+
+                group.selectAll(".dot_ave")
+                    .data(function(d,i){return d.history})
+                    .enter()
+                    .append("circle")
+                    .attr("cy",function(d){
+                      return sub_height-yScale(d)-top_padding;
+
+                      })
+                    // .data(function(d,i){return i})
+                    .attr("cx",2)
+                    .attr("r",3)
+                    .attr("class","dot_ave")
+                    .attr("check",function(d,i) {return d +","+i})
+                    .attr("fill",function(d,i){return colors(i)});
+
+              
+
+               group.selectAll("Ave_xmark")
+                    .data(function(d){return d.name})
+                    .enter()
+                    .append("text")
+                    .attr("y",function(d,i){return i*7+243})
+                    .attr("x",0) 
+                    .attr("class","Ave_xmark")
+                    .attr("font-size","10")
+                    .attr("text-anchor","middle")
+                    .style("font-family","Times New Roman")
+                    .text(function(d,i){return d});
+                
+              /*  group.selectAll("back_mark")
+                    .data(function(d){return d.id})
+                    .enter()
+                    .append("svg")
+                    .attr("y",0)
+                    .attr("x",0) 
+                    .attr("width",xScale.rangeBand())
+                    .attr("height",function(){return sub_height-top_padding;})
+                    .attr("class","back_mark")
+                    .attr("fill","grey")
+                    .call(function(){console.log("00")});
+                    //.attr("opacity",function(d){ if(d==id) return 0.5; else return 0});*/
+
+
+   });
+}
+
+    </script>
+  </body>
 </html>

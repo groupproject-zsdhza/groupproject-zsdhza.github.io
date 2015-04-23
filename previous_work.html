@@ -1,0 +1,271 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="jquery-1.11.2.js"></script> 
+<script src="d3.js"></script>
+<script type='text/javascript' src="jsdocument.js"></script>
+<link type="text/css" rel="stylesheet" href="cssdocument.css"/>
+<title>Group Website</title>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-61797634-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+</head>
+
+<body>
+	   <h1>Introduction of Team members</h1>
+    <h2>Touch us to know more</h2>
+    
+    <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="80%" color=#666 SIZE=3>
+	<div id="grouplink"><a href="https://github.com/groupproject-zsdhza/groupproject-zsdhza.github.io" >Group Github Link</a></div>
+    <ul id="members">
+    <li>
+    <img src="materials/hza.png"  alt="" width="130" height="130"/>
+    <div><p><strong>Hi, I am Ziang Hu</strong></p>
+      <p>Off-campus student from Zhejiang University, China</p>
+      <p>Major in Industrial Engineering</p>
+       <p><strong>Both of us are HTML beginners.</strong></p>
+    </div></li>
+    <br/>
+    <li>
+    <img src="materials/zsd.png"  alt="" width="130" height="130"/>
+    <div><p><strong>Hi, I am Shaodong Zhang</strong></p>
+      <p>Off-campus student from Zhejiang University, China</p>
+      <p>Major in Mechatronics Engineering</p>
+       <p><strong>My pleasure to have class with you all.</strong></p>
+ 
+    
+    
+    
+    </div></li>
+    </ul>
+    <br/>
+    <br/>
+    
+    
+    <h1>Potential Data Sources</h1>
+    <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="80%" color=#666 SIZE=3>
+    <ol>
+    	<li>National Bureau of Statistics of China <a href="http://data.stats.gov.cn/">http://data.stats.gov.cn/</a></li><p class="comment">"We can find the data published by Chinese government here."<p>
+	<li>Hangzhou statistical information Website <a href="http://www.hzstats.gov.cn/web/">http://www.hzstats.gov.cn/web/</a></li><p class="comment">"This is the public data website of our city."</p>
+	<li>Google public Data <a href="http://www.google.com/publicdata/">http://www.google.com/publicdata/</a></li><p class="comment">We can search any data here.</p>
+	<li>Statistics China <a href="http://www.itongji.cn/">http://www.itongji.cn</a></li><p class="comment"> "A professional statistics website in China."</p>
+	<li>International Energy Agency <a href="http://www.iea.org/">http://www.iea.org/</a></li><p class="comment">"We can find the data about energy here."</p>
+	<li> United Nations Statistic Division <a href="http://unstats.un.org/">http://unstats.un.org/</a></li><p class="comment"> "Open data from US government."</p>
+	<li>the U.S. Government’s open data <a href="http://www.data.gov/">http://www.data.gov/</a></li><p class="comment">"Open data from US government."</p>
+	<li>Yahoo Finance <a href="http://finance.yahoo.com/">http://finance.yahoo.com/</a></li><p class="comment"> "Many data about Finance here."</p>
+	<li>Baidu Statistics <a href="http://tongji.baidu.com/">http://tongji.baidu.com/</a></li><p class="comment">"We can even use it to collect data by our own."</p>
+	<li>National Oceanographic Data Center <a href="http://www.nodc.noaa.gov/General/temperature.html">http://www.nodc.noaa.gov/General/temperature.html</a></li><p class="comment">"A lot of data about temperature. "</p>
+   
+    </ol>
+    
+    <br/>
+    <br/>
+    <h1>Data Visualization</h1>
+    <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="80%" color=#666 SIZE=3>
+    <div align="center">
+    <iframe
+    	align
+  	style="border: 0px;"
+  	src="https://public.tableausoftware.com/profile/ziang.hu#!/vizhome/HW3_11/1?:embed=y&amp;:from_wg=true"
+  	scrolling="no"
+  	width="1000px"
+  	height="800px">
+    </iframe></div>
+    
+    <br/>
+    <br/>
+    <h1>Story of Data</h1>
+    <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="80%" color=#666 SIZE=3>
+    <div align="center" class="comment">
+    	<p>GDP is always calculated using the expenditures approach, whose formula is</p>
+<p>GDP = C + G + I + (X - M)</p>
+<p>In the formula, C is represented by Consumption; G refers to Government Spending; I is gross investment and (X - M) is the net exports.</p>
+  <p>Seemingly there is no direct relationship between GDP and population.</p>
+  <p>However, GDP climbs to the higher position with the increasing population and when the population growth rate decrease, GDP has a faster increase.</p>
+  <p>The phenomenon may be explained as follows. More new-borns spur the demand for consumption, but too quick growth of population consumes more resource in country so the steps of development are disturbed.</p>
+  <p>All above is just our guess :)</p>  	
+    </div>
+
+<br/>
+    <br/>
+
+
+
+<h1>Data Visualization with D3</h1>
+    <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="80%" color=#666 SIZE=3>
+ 
+<script>
+
+var margin = {top: 40, right: 20, bottom: 30, left: 40},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+var x0 = d3.scale.ordinal()
+    .rangeRoundBands([width, 0], .1);
+
+var x1 = d3.scale.ordinal();
+
+var y = d3.scale.linear()
+    .range([height, 0]);
+
+var color = d3.scale.ordinal()
+    .range([ "#8a89a6", "#ff8c00"]);
+
+var xAxis = d3.svg.axis()
+    .scale(x0)
+    .orient("bottom");
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left")
+    .tickFormat(d3.format(".2s"));
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+d3.csv("gdpdata.csv", function(error, data) {
+  var ageNames = d3.keys(data[0]).filter(function(key) { return key !== "Year"; });
+
+  data.forEach(function(d) {
+    d.ages = ageNames.map(function(name) { return {name: name, value: +d[name]}; });
+  });
+
+  //console.log(data);
+
+  x0.domain(data.map(function(d) { return d.Year; }));
+  x1.domain(ageNames).rangeRoundBands([0, x0.rangeBand()]);
+  y.domain([0, d3.max(data, function(d) { return d3.max(d.ages, function(d) { return d.value; }); })]);
+
+  svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis);
+
+  svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+      .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text("GDP&Population");
+
+                 var gdp=svg.append("text")
+                          .attr("x","0px")
+                          .attr("y","-5px")
+                          .attr("fill","black")
+                          .attr("font-size","15px")
+                          .text("(Move on the rect to see the detail)");
+
+
+
+  var year= svg.selectAll(".year")
+      .data(data)
+    .enter().append("g")
+      .attr("class", "g")
+      .attr("transform", function(d) { return "translate(" + x0(d.Year) + ",0)"; });
+
+  year.selectAll("rect")
+      .data(function(d) { return d.ages; })
+      .enter()
+      .append("rect")
+      .attr("width", x1.rangeBand())
+      .attr("x", function(d) { return x1(d.name); })
+      .attr("y", function(d) { return y(d.value); })
+      .attr("height", function(d) { return height - y(d.value); })
+      .style("fill", function(d) { return color(d.name); })
+      .attr("class", "rect")
+      .on("mouseover", function(d,i) {
+
+      
+            if(i==0)
+            {
+                  var gdp=svg.append("text")
+                          .attr("x","200px")
+                          .attr("y","20px")
+                          .attr("class","tooltip")
+                          .attr("fill","black")
+                          .text(function(){return "GDP(0.1 Billion):"+d.value});
+            }
+            if(i==1)
+            {
+
+                  var popu=svg.append("text")
+                          .attr("x","200px")
+                          .attr("y","40px")
+                          .attr("class","tooltip")
+                          .attr("fill","black")
+                          .text(function(){return"Population(10 Thousand):"+d.value});
+
+
+            }
+
+
+          })
+      .on("mouseout", function() { 
+              d3.selectAll(".tooltip").remove();
+          });
+
+  var legend = svg.selectAll(".legend")
+      .data(ageNames.slice().reverse())
+      .enter().append("g")
+      .attr("class", "legend")
+      .attr("transform", function(d, i) { return "translate(-70," + (i * 20-35) + ")"; });
+
+  legend.append("rect")
+      .attr("x", width - 18)
+      .attr("width", 18)
+      .attr("height", 18)
+      .style("fill", color);
+
+  legend.append("text")
+      .attr("x", width - 24)
+      .attr("y", 9)
+      .attr("dy", ".35em")
+      .style("text-anchor", "end")
+      .text(function(d) { return d; });
+});
+
+</script>
+
+<br/><br/>
+
+    <h1>Data from Google Analytics</h1>
+    <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="80%" color=#666 SIZE=3>
+    <div align="center" class="comment">
+      <p>The codes have been added to the source codes and data from Google Analytics is presented as below</p>
+       <p><img src="GA_data.png"  alt="" width="1200" height="400"/></p>
+    </div>
+
+<br/><br/>
+    <h1>Join the Discussion!</h1>
+    <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=3)" width="80%" color=#666 SIZE=3>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'groupproject'; // Required - Replace '<example>' with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+    </body>
+</html>
