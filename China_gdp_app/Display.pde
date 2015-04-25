@@ -223,10 +223,9 @@ void Cylinder(float x,float y,float r,float h,float c,int i){
 }
 
 void Text(float x,float y,float h,float perh,int i){
-  String str0,str1,str2;
+  String str0,str1;
   str0=name[i];
-  str1="SpotHot: " + whatNow[i] +".";
-  str2="SpotVol: "+(whatNow[i]*100/capacity[i]*6)+"%.";
+  str1="Percentage: "+(whatNow[i]*100/capacity[i]*6)+"%.";
   
   pushMatrix();
     textMode(SHAPE);
@@ -234,13 +233,10 @@ void Text(float x,float y,float h,float perh,int i){
     fill(255);
     
     translate(x,1,y);
-    translate(0,-h,0);
+    translate(0,-h*0.95,0);
     rotateX(-rotx);
     rotateY(-roty);
     scale(TextScale);
-        textFont(f2,TextX);
-        textLeading(TextL);
-        text(str2,0,0);
     translate(0,-perh,0);
         textFont(f2,TextX);
         textLeading(TextL);

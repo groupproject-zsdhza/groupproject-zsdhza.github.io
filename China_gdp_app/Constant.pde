@@ -10,8 +10,8 @@ color Csummer=color(255, 75, 87);
 color Cfall=color(255, 216, 75);
 color Cwinter=color(66, 155, 242);
 
-int TextX=30;
-int TextXX=40;
+int TextX=25;
+int TextXX=25;
 int Text=28;
 int TextL=40;
 int WindowX=1200;
