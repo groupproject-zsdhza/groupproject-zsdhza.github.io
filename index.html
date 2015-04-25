@@ -321,8 +321,8 @@ d3.json("china.json", function(states) {
        // var yPosition = parseFloat(d3.select(this).attr("y"))+100;
 
           d3.select("#tooltip")
-              .style("left", d.x+10 + "px")
-              .style("top", d.y+10 + "px")
+              .style("left", d.x + "px")
+              .style("top", d.y + "px")
               .select("#value")
             .text(function(){return d.feature.properties.english_name+":￥"+d.feature.properties.Ave_GDP});
 
