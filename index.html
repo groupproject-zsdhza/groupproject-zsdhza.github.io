@@ -5,6 +5,32 @@
     <title>Force-Directed Map: GDP and Population</title>
     <script type="text/javascript" src="d3.v2.js"></script>
     <style type="text/css">
+#tooltip {
+position: absolute;
+width: 120px;
+height: auto;
+padding: 10px;
+background-color: white;
+-webkit-border-radius: 10px;
+-moz-border-radius: 10px;
+border-radius: 10px;
+-webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4); 
+-moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4); 
+box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+ pointer-events: none;
+ text-align: center;
+}
+#tooltip.hidden {
+display: none;
+}
+#tooltip p { 
+  margin: 0;
+font-family: sans-serif; 
+font-size: 10px; 
+line-height: 10px;
+}
+
+
 .axis path,.axis line {
          fill: none;
          stroke: black;
@@ -76,6 +102,10 @@ h2{
 <h2>Team: TARS (Team member: Ziang Hu & Shaodong Zhang)   <a href="http://groupproject-zsdhza.github.io/previous_work.html"><em>   See our previous work here</em></a>
 </h2>
 <h3>Hover on the map to see the data visualization, drag it to move.</h3>
+
+  <div id="tooltip" class="hidden">
+    <p><strong>2013 GDP per Capita </strong></p> <p><span id="value">100</span></p>
+  </div>
 
 
 
@@ -287,6 +317,19 @@ d3.json("china.json", function(states) {
 
           sub_Ave_new(d.feature.id);
 
+        //var xPosition = parseFloat(d3.select(this).attr("x"))+100;
+       // var yPosition = parseFloat(d3.select(this).attr("y"))+100;
+
+          d3.select("#tooltip")
+              .style("left", d.x+30 + "px")
+              .style("top", d.y+50 + "px")
+              .select("#value")
+            .text(function(){return d.feature.properties.english_name+":￥"+d.feature.properties.Ave_GDP});
+
+          d3.select("#tooltip").classed("hidden", false);
+
+          
+
 
       })
       .on("mouseout",function(d,i){
@@ -296,7 +339,11 @@ d3.json("china.json", function(states) {
           value2=value1+20;
           //value2=d.feature.properties.Ave_GDP%255;
           return "rgb(220, "+Math.round(value2)+", "+Math.round(value1)+")";
-        })
+          });
+
+          d3.select("#tooltip").classed("hidden", true);
+
+        
 
         //  d3.selectAll(".sub_chart").attr("display","none");
 
