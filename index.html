@@ -75,7 +75,7 @@ h2{
 <h1>Population and GDP of China: Relationship and Development</h1> 
 <h2>Team: TAR (Team member: Ziang Hu & Shaodong Zhang)   <a href="http://groupproject-zsdhza.github.io/previous_work.html"><em>   See our previous work here</em></a>
 </h2>
-<h3>Hover on the map to see the data visualization, drag it to move; the strength of red represents the value of GDP per capita in 2014</h3>
+<h3>Hover on the map to see the data visualization, drag it to move.</h3>
 
 
 <script type="text/javascript">
@@ -114,7 +114,7 @@ var sub_svg_Total = svg.append("svg")
     .attr("class","sub_chart")
     .attr("width", sub_width+50)
     .attr("height", sub_height)
-    .attr("x",900)
+    .attr("x",850)
     .attr("y",100)
     .attr("display","none");;
 
@@ -122,7 +122,7 @@ var sub_svg_Ave= svg.append("svg")
     .attr("class","sub_chart")
     .attr("width", sub_width+50)
     .attr("height", sub_height)
-    .attr("x",900)
+    .attr("x",850)
     .attr("y",400)
     .attr("display","none");
 
@@ -134,6 +134,65 @@ var sub_svg_Ave_new= svg.append("svg")
     .attr("y",700)
     .attr("display","none");
 
+var width2=20;
+    xposition=400;
+    yposition=60;
+
+svg.append("rect")
+    .attr("x",xposition)
+    .attr("y",yposition)
+    .attr("width", 2*width2)
+    .attr("height",width2)
+    .attr("fill", function() {
+          return "rgb(226, 175, 159 )";
+         });
+  svg.append("rect")
+    .attr("x",xposition+2*width2)
+    .attr("y",yposition)
+    .attr("width", 2*width2)
+    .attr("height",width2)
+    .attr("fill", function() {
+          return "rgb(226, 127, 111 )";
+         });
+  svg.append("rect")
+    .attr("x",xposition+4*width2)
+    .attr("y",yposition)
+    .attr("width",2*width2)
+    .attr("height",width2)
+    .attr("fill", function() {
+          return "rgb(226, 103, 87 )";
+         });
+  svg.append("rect")
+    .attr("x",xposition+6*width2)
+    .attr("y",yposition)
+    .attr("width", 2*width2)
+    .attr("height",width2)
+    .attr("fill", function() {
+          return "rgb(226, 50, 50 )";
+         });
+   
+   svg.append("text")
+    .attr("x",xposition+4*width2)
+    .attr("y",yposition-12)
+    .attr("font-size",13)
+    .attr("font-family","Garamond")
+    .attr("text-anchor","middle")
+    .text("2013 GDP per Capita")
+
+  svg.append("text")
+    .attr("x",xposition-width2)
+    .attr("y",yposition+width2-5)
+    .attr("font-size",13)
+    .attr("font-family","Garamond")
+    .attr("text-anchor","middle")
+    .text("Low")
+  svg.append("text")
+    .attr("x",xposition+9*width2)
+    .attr("y",yposition+width2-5)
+    .attr("font-size",13)
+    .attr("font-family","Garamond")
+    .attr("text-anchor","middle")
+    .text("High")
 
 /*sub_svg_Total.append("rect")
         .attr("x",0)
