@@ -25,6 +25,16 @@
       font-size:18px;
 }
 
+.link{
+      margin:0 auto; width:300px;
+      font-family: Verdana;
+}
+
+.download{
+  text-align: center;
+  font-family: Garamond;
+}
+
 path {
   fill: #aaa;
   fill-opacity: .8;
@@ -44,7 +54,7 @@ line {
 }
 
 
-h1, h2{
+h1, h2, h3{
   text-align: center;
   font-family: Garamond;
 }
@@ -65,13 +75,14 @@ h2{
 <h1>Population and GDP of China: Relationship and Development</h1> 
 <h2>Team: TAR (Team member: Ziang Hu & Shaodong Zhang)   <a href="http://groupproject-zsdhza.github.io/previous_work.html"><em>   See our previous work here</em></a>
 </h2>
+<h3>Hover on the map to see the data visualization, drag it to move; the strength of red represents the value of GDP per capita in 2014</h3>
 
 
 <script type="text/javascript">
 
 
 var width = 1400,
-    height = 1700;
+    height = 1050;
 
 var axismark_ave=0;
 var axismark_total=0;
@@ -824,5 +835,16 @@ function sub_Ave_new(id){
 }
 
     </script>
+
+<h1>3D Application for Visualisation</h1>
+<div align="center"><img src="China_gdp_app.png" alt="China_gdp_app"/> </div>
+<h3 class="download">DOWNLOAD：</h3>
+<div class="link"><ul>
+  <li><a href="https://github.com/groupproject-zsdhza/groupproject-zsdhza.github.io">Source codes</a> (in file "china_gdp_app", you need Processing to run it)</li>
+  <li><a href="https://drive.google.com/folderview?id=0B7ueNR_zENeifldPbGtGTzVuWTBGVS1sVmxQQmQza1loeDd1WFdMVG8yakZYUmt1dXltNmM&usp=sharing">Application for Mac</a></li>
+  <li><a href="https://drive.google.com/folderview?id=0B7ueNR_zENeifkd1dmxlbFFtdkdNMUQzNl9ORl91T2ZYcjNLTTQwOEVRTGtYOVFBd285MlU&usp=sharing">Application for Win64</a></li>
+ <li><a href="https://drive.google.com/folderview?id=0B7ueNR_zENeifkt1cVRPalJLN01LVzdwTzZGV0paSWR6OS1sVUZiR1NTR2tTQUNWOTVibVU&usp=sharing">Application for Win32</a></li>
+</ul></div>
+
   </body>
 </html>
